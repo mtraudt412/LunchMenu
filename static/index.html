@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Include our CSS -->
+    <link rel="stylesheet" href="static/skeleton.css">
+    <link rel="stylesheet" href="static/normalize.css">
+
+    <!-- Need JQuery to send requests to the backend -->
+    <script language="javascript" src="scripts/jquery-3.2.1.js"></script>
+
+    <!-- Use the following CSS to create a nice spinner so the user knows that the data is being loaded. -->
+    <style>
+      /* Center the loader and format the spinner */
+      #loader {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        z-index: 1;
+        width: 50px;
+        height: 50px;
+        margin: -75px 0 0 -75px;
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid #3498db;
+        animation: spin 2s linear infinite;
+      }
+    
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    
+      /* Add animation to "page content" */
+      .animate-bottom {
+        position: relative;
+        animation-name: animatebottom;
+        animation-duration: 1s
+      }
+    
+      @keyframes animatebottom { 
+        from{ bottom:-100px; opacity:0 } 
+        to{ bottom:0; opacity:1 }
+      }
+    
+      #myForm {
+        display: none;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body style="margin:0;">
+    <!-- This is needed to display the spinner. -->
+    <div id="loader"></div>
+    
+    <!-- This defines the static parts of the form (i.e. the elements that do not change from one day to the next). -->
+    <!-- The style starts off as "display:none" because we do not want to display the form while the spinner is visible. -->
+    <form style="display:none;" id="myForm" class="animate-bottom">
+      <div class="container">
+        <div class="row">
+          <div class="twelve columns">
+            <h2>Assumption School Lunch Menu</h2>
+          </div>
+        </div>
+        <div class="row">
+          <div class="twelve columns">
+            <h2 id="date"></h2>
+          </div>
+        </div>
+        <div class="row">
+          <!-- Here we create a dropdown to allow the teacher to select his/her classroom. -->
+          <div class="twelve columns">
+            <select id="classroom" onchange="onClassRoomChanged()">
+               <option value="c0"></option>
+               <option value="c1">c1</option>
+               <option value="c2">c2</option>
+               <option value="c3">c3</option>
+             </select>
+          </div>
+        </div>
+      </div>      
+      <br>
+      <!-- We use a fieldset tag to separate the menu items visually from other parts of the form. -->
+      <fieldset style="margin-left:33%;margin-right:33%;text-align:left;">
+        <legend>Menu</legend>
+        <div class="container">
+          <!-- In code we typically count starting from zero instead of one -->
+          <div id="row0" class="row">
+            <div class="four columns">
+              <label id="item0" style="float:right;" for="count0"></label>
+            </div>
+            <div class="eight columns">
+              <input id="count0" style="float:left;" type="number" min="0" value="0" />
+            </div>
+          </div>
+          <div id="row1" class="row">
+            <div class="four columns">
+              <label id="item1" style="float:right;" for="count1"></label>
+            </div>
+            <div class="eight columns">
+              <input id="count1" style="float:left;" type="number" min="0" value="0" />
+            </div>
+          </div>
+        </div>
+      </fieldset>
+      <br>
+      <div class="container">
+        <div class="row">
+          <div class="twelve columns">
+            <p id="missing" style="color:red"></p>
+          </div>
+        </div>
+      </div>
+      <br>
+      <!-- Here I am using a CSS class (style) defined by Skeleton. -->
+      <!-- You can see how this is styled by looking at the CSS in Skeleton.html -->
+      <input id="submit" type="button" value="Submit" onclick="onSubmit()" class="button-primary"/>
+      <br>
+      <dialog id="thankyou">
+        <p>Thank you!</p>
+        <button onclick="closeThankYouDialog()" type="reset">Okay</button>
+      </dialog>
+    </form>
+    <!-- The <script> element contains JavaScript that runs in the browser -->
+    <script>
+      $(document).ready(function(){
+        var url = "http://localhost:8080/menus/".concat(menuKey());
+        $.ajax({ 
+              type: "GET",
+              dataType: "json",
+              url: url,
+              success: function(data){        
+                populateForm(data);
+              },
+              error: function(data){
+                alert("Error populating form!")
+              }
+        });
+
+        setTimeout(showPage, 3000);
+      });
+      
+      // This function will get called when the form is loaded.
+      // It calls our server code to get the data for today and then populates the form with the results.
+      // NOTE: Currently we do not have any way to inform the user if there was an error but we can do that easily in the future.
+      function populateForm(menu) {
+        var date = new Date();
+
+        // The JavaScript Date object includes time and timezone info. We only care about the day/month/year.
+        // JavaScript numbers months starting with zero (e.g. January=0) so we need to add one for display.       
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+
+        var dateStr = month + '/' + day + '/' + year;
+        document.getElementById("date").innerHTML = dateStr;
+
+        var items = menu.Items.split(",");
+
+        if (items.length > 0) {
+          document.getElementById("row0").hidden = false;
+          document.getElementById("item0").innerHTML = items[0];
+        }
+        else {
+          document.getElementById("row0").hidden = true;
+        }
+
+        if (items.length > 1) {
+          document.getElementById("row1").hidden = false;
+          document.getElementById("item1").innerHTML = items[1];
+        }
+        else {
+          document.getElementById("row1").hidden = true;
+        }
+      }
+
+      // The key for the menu to lookup is today's date in "YYYYMMDD" format.
+      function menuKey()
+      {
+        var date = new Date();
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        return [date.getFullYear(), (month>9 ? '' : '0') + month, (day>9 ? '' : '0') + day].join('');
+      }
+
+      function showPage() {
+        document.getElementById("loader").style.display = "none";
+        document.getElementById("myForm").style.display = "block";
+      }
+      
+      // If the email was successfully sent this method is called.
+      function showThankYouDialog() {
+        $("#thankyou")[0].show();
+      }
+
+      // This will close the thankyou dialog.
+      function closeThankYouDialog() {
+        document.getElementById("thankyou").close();
+      }
+      
+      function onClassRoomChanged() {
+        var e = document.getElementById("classroom");
+        if (e.selectedIndex != 0) {
+          document.getElementById("missing").innerHTML = "";
+        }
+      }
+      
+      // This function is called when the Submit button is clicked.
+      // It will attempt to send an email with the values entered by the user.
+      function onSubmit() {
+        var e = document.getElementById("classroom");
+        if (e.selectedIndex == 0) {
+          document.getElementById("missing").innerHTML = "Must select a classroom!";
+          return;
+        }
+        
+        // Create the subject using the classroom
+        var classroom = e.options[e.selectedIndex].text;
+        var subject = classroom + " menu choices";
+
+        // Create the body using the count of each menu item
+        var body = "";
+        var row0 = document.getElementById("row0");
+        if (!row0.hidden) {
+          var item0 = document.getElementById("item0").innerHTML;
+          var count0 = document.getElementById("count0").value;
+          body += item0 + " = " + count0 + "\n";
+        }
+        if (!row1.hidden) {
+          var item1 = document.getElementById("item1").innerHTML;
+          var count1 = document.getElementById("count1").value;
+          body += item1 + " = " + count1 + "\n";
+        }
+        // TODO: POST data to backend
+        showThankYouDialog();
+      }
+    </script>
+  </body>
+</html>
