@@ -136,7 +136,7 @@
               }
         });
 
-        setTimeout(showPage, 3000);
+        setTimeout(showPage, 2000);
       });
       
       // This function will get called when the form is loaded.
@@ -234,11 +234,10 @@
         var url = "http://localhost:8080/requests/".concat(dateKey()).concat("/").concat(classroom);
         var request = $.ajax({ 
               type: "POST",
-              dataType: "json",
               data: JSON.stringify(choices),
               url: url
           })
-          .always(function() {
+          .done(function() {
             showThankYouDialog();
           });
         // TODO: Handle error status!
