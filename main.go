@@ -53,9 +53,7 @@ func init() {
 	r.HandleFunc("/requests/{date}/{homeroom}", deleteMenuRequest).Methods("DELETE")
 
 	// Static content
-	r.PathPrefix("/scripts/").Handler(http.StripPrefix("/scripts/", http.FileServer(http.Dir("scripts"))))
-	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
-	r.Path("/").Handler(http.FileServer(http.Dir("static")))
+	r.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir("static/"))))
 
 	http.Handle("/", r)
 }
@@ -91,7 +89,6 @@ func getMenu(w http.ResponseWriter, r *http.Request) {
 	// Send as JSON
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(dto)
-	w.WriteHeader(200)
 }
 
 func createMenu(w http.ResponseWriter, r *http.Request) {
@@ -178,7 +175,6 @@ func getMenuRequests(w http.ResponseWriter, r *http.Request) {
 	// Return as JSON
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(dtos)
-	w.WriteHeader(200)
 }
 
 func createMenuRequest(w http.ResponseWriter, r *http.Request) {
@@ -196,6 +192,7 @@ func createMenuRequest(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
 	bytes, err := json.Marshal(choices)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -208,7 +205,7 @@ func createMenuRequest(w http.ResponseWriter, r *http.Request) {
 	request.Homeroom = homeroom
 	request.Choices = string(bytes)
 
-	log.Infof(c, "Saving MenuRequest for [%s] and [%s]", date, homeroom)
+	log.Infof(c, "Saving MenuRequest for [%s] and [%s] : %s", date, homeroom, request.Choices)
 
 	// Store MenuRequest
 	id := date + "|" + homeroom
