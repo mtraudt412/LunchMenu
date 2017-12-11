@@ -48,7 +48,7 @@ func init() {
 	r.HandleFunc("/menus/{date}", deleteMenu).Methods("DELETE")
 
 	// MenuRequest CRUD operations
-	r.HandleFunc("/requests/{date}", getMenuRequests).Methods("GET")
+	r.HandleFunc("/requests/{date}", getMenuRequest).Methods("GET")
 	r.HandleFunc("/requests/{date}/{homeroom}", createMenuRequest).Methods("POST")
 	r.HandleFunc("/requests/{date}/{homeroom}", deleteMenuRequest).Methods("DELETE")
 
@@ -141,7 +141,7 @@ func deleteMenu(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func getMenuRequests(w http.ResponseWriter, r *http.Request) {
+func getMenuRequest(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 
 	// Get date from URL
