@@ -5,9 +5,6 @@
     <link rel="stylesheet" href="/skeleton.css">
     <link rel="stylesheet" href="/normalize.css">
 
-    <!-- Need JQuery to send requests to the backend -->
-    <script language="javascript" src="/jquery-3.2.1.js"></script>
-
     <!-- Use the following CSS to create a nice spinner so the user knows that the data is being loaded. -->
     <style>
       /* Center the loader and format the spinner */
@@ -122,30 +119,36 @@
     </form>
     <!-- The <script> element contains JavaScript that runs in the browser -->
     <script>
-      $(document).ready(function(){
+      function load() {
         var url = "http://localhost:8080/menus/".concat(dateKey());
-        $.ajax({ 
-              type: "GET",
-              dataType: "json",
-              url: url,
-              success: function(menu){        
-                populateForm(menu);
-              },
-              error: function(menu){
-                alert("Error populating form!")
-              }
-        });
+
+        httpGet(
+          url, 
+          function(response) { 
+            populateForm(response); 
+          },
+          function(response) {
+            alert("Error getting menu: " + response);
+          } 
+        );
 
         setTimeout(showPage, 2000);
-      });
-      
+      }
+
+      window.onload = load;
+
       // This function will get called when the form is loaded.
       // It calls our server code to get the data for today and then populates the form with the results.
-      function populateForm(menu) {
+      function populateForm(response) {
+        // The response is a JSON string. 
+        // We start by converting it to a JavaScript object.
+        var menu = JSON.parse(response);
+
+        // Get today's date
         var date = new Date();
 
-        // The JavaScript Date object includes time and timezone info. We only care about the day/month/year.
-        // JavaScript numbers months starting with zero (e.g. January=0) so we need to add one for display.       
+        // The JavaScript Date object includes time info. We only care about the day/month/year.
+        // JavaScript numbers months starting with zero so we need to add one to the month.       
         var day = date.getDate();
         var month = date.getMonth() + 1;
         var year = date.getFullYear();
@@ -188,7 +191,7 @@
       
       // If the email was successfully sent this method is called.
       function showThankYouDialog() {
-        $("#thankyou")[0].show();
+        document.getElementById("thankyou").show();
       }
 
       // This will close the thankyou dialog.
@@ -203,6 +206,34 @@
         }
       }
       
+      function httpGet(theUrl, success, error) {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function() { 
+          if (xmlHttp.readyState == 4) {
+            if (xmlHttp.status == 200)
+              success(xmlHttp.responseText);
+            else
+              error(xmlHttp.responseText);
+          }
+        }
+        xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+        xmlHttp.send(null);
+      }
+      
+      function httpPost(theUrl, body, success, error) {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function() { 
+          if (xmlHttp.readyState == 4) {
+            if (xmlHttp.status == 200)
+              success(xmlHttp.responseText);
+            else
+              error(xmlHttp.responseText);
+          }
+        }
+        xmlHttp.open("POST", theUrl, true); // true for asynchronous 
+        xmlHttp.send(body);
+      }
+
       // This function is called when the Submit button is clicked.
       // It will attempt to send an email with the values entered by the user.
       function onSubmit() {
@@ -232,15 +263,16 @@
 
         // Save our requests in datastore
         var url = "http://localhost:8080/requests/".concat(dateKey()).concat("/").concat(classroom);
-        var request = $.ajax({ 
-              type: "POST",
-              data: JSON.stringify(choices),
-              url: url
-          })
-          .done(function() {
+        httpPost(
+          url,
+          JSON.stringify(choices),
+          function(response) {
             showThankYouDialog();
-          });
-        // TODO: Handle error status!
+          },
+          function(response) { 
+            alert("Error submitting menu requests: " + response);
+          }
+        );
       }
     </script>
   </body>
