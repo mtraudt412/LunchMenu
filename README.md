@@ -71,11 +71,11 @@ Browse to https://github.com and click on "Sign Up".
 
 You will be prompted for the folder on your computer to clone the project to. This depends on your computer.
 
-####MacOS:
+* MacOS:
 
 /Users/[your User here]/go/src
 
-####Windows: 
+* Windows: 
 
 C:\\Users\\[your User here]\go\src
 
