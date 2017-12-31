@@ -47,8 +47,9 @@ _Accept the options to Start Google Cloud SDK Shell and run gcloud init._
 
 ### Install components required for our project:
 
-gcloud components install app-engine-go
-gcloud components install cloud-datastore-emulator
+>gcloud components install app-engine-go
+
+>gcloud components install cloud-datastore-emulator
 
 ### Set GOPATH environment variable:
 
@@ -77,7 +78,7 @@ You will be prompted for the folder on your computer to clone the project to. Th
 
 * Windows: 
 
-C:\\Users\\[your User here]\go\src
+C:\\Users\\[your User here]\\go\\src
 
 ## Step 3 - Install Visual Studio Code
 
