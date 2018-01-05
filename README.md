@@ -15,11 +15,13 @@ During the install, you will be presented with the following message in the Term
 
 >Installation directory (this will create a google-cloud-sdk subdirectory) (/Users/[your User here]):
 
-If so, type in the following to continue with the installation process: 
+Press the Enter key. This will install the google-cloud-sdk software into the default location displayed at the end of the message.
+
+After this step completes, type in the following to continue with the installation process: 
 
 >exec -l $SHELL
 
-This will ensure that your current Terminal is configured properly to run the following commands.
+This will ensure that your current Terminal is configured properly to run the remaining commands.
 
 ### Run gcloud init:
 
@@ -51,13 +53,19 @@ _Accept the options to Start Google Cloud SDK Shell and run gcloud init._
 
 >gcloud components install cloud-datastore-emulator
 
+## Step 2 - Install the Go programming language
+
+### Download and run the appropriate installer from this URL:
+
+https://golang.org/dl/
+
 ### Set GOPATH environment variable:
 
 Add User environment variable GOPATH with value "C:\\Users\\[your User here]\\go".
 
-## Step 2 - Install GitHub Desktop
+## Step 3 - Install GitHub Desktop
 
-### Download the appropriate installer from this URL:
+### Download and run the appropriate installer from this URL:
 
 https://desktop.github.com/
 
@@ -79,6 +87,25 @@ You will be prompted for the folder on your computer to clone the project to. Th
 * Windows: 
 
 C:\\Users\\[your User here]\\go\\src
+
+### Test that you are able to build and run the LunchMenu application
+
+Type the following commands into a Terminal:
+
+* MacOS:
+
+cd $GOPATH/src/LunchMenu
+./start.sh
+
+* Windows: 
+
+cd %GOPATH%\\src\\LunchMenu
+.\start.cmd
+
+At this point, you should open a web browser such as Chrome or Safari and browse to: http://localhost:8686.
+
+If the application started successfully, you will see the landing page for the LunchMenu application.
+
 
 ## Step 3 - Install Visual Studio Code
 
