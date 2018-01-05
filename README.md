@@ -1,9 +1,11 @@
 
 # Installation Instructions
 
-The first step is different depending on whether you are using MacOS or Windows.
+In the instructions below, any reference to "[your User here]" should be replaced with your Windows or MacOS username.
 
-## Step 1 - Install Google Cloud SDK (MacOS)
+Follow the instructions in Step 1a or 1b below depending on whether you are using MacOS or Windows. Then follow the instructions for the following steps.
+
+## Step 1a - Install Google Cloud SDK (MacOS)
 
 ### Open a Terminal and enter the following: 
 
@@ -15,7 +17,7 @@ During the install, you will be presented with the following message in the Term
 
 >Installation directory (this will create a google-cloud-sdk subdirectory) (/Users/[your User here]):
 
-Press the Enter key. This will install the google-cloud-sdk software into the default location displayed at the end of the message.
+Press the Enter key. This will install the google-cloud-sdk software into the location displayed at the end of the message.
 
 After this step completes, type in the following to continue with the installation process: 
 
@@ -37,7 +39,7 @@ NOTE: You will need to enter your Google account user/password details.
 
 These components are required to build and test our application.
 
-## Step 1 - Install Google Cloud SDK (Windows)
+## Step 1b - Install Google Cloud SDK (Windows)
 
 ### Download and run the following installer:
 
@@ -62,6 +64,20 @@ https://golang.org/dl/
 ### Set GOPATH environment variable:
 
 Add User environment variable GOPATH with value "C:\\Users\\[your User here]\\go".
+
+* MacOS:
+
+Edit the file /Users/[your User here]/.bash_profile using a Text Editor and add the following line at the bottom:
+
+export GOPATH=/Users/[your User here]/go
+
+* Windows: 
+
+Open the Start Menu and type "Edit Environment Variables For Your Account" and select the menu item that is displayed.
+
+In the upper section of the form that is displayed, click on "New..." and define a new variable with Name="GOPATH" and Value="C:\\Users\\[your User here]\\go".
+
+After saving this change, you will need to open a new Command Prompt.
 
 ## Step 3 - Install GitHub Desktop
 
@@ -102,15 +118,16 @@ cd $GOPATH/src/LunchMenu
 cd %GOPATH%\\src\\LunchMenu
 .\start.cmd
 
-At this point, you should open a web browser such as Chrome or Safari and browse to: http://localhost:8686.
+At this point, you should open a web browser such as Chrome or Safari and browse to: 
+
+http://localhost:8686
 
 If the application started successfully, you will see the landing page for the LunchMenu application.
 
-
-## Step 3 - Install Visual Studio Code
+## Step 4 - Install Visual Studio Code
 
 https://code.visualstudio.com/download
 
-## Step 4 - Install Postman
+## Step 5 - Install Postman
 
 https://www.getpostman.com/apps
