@@ -29,7 +29,9 @@ This will ensure that your current Terminal is configured properly to run the re
 
 >gcloud init
 
-NOTE: You will need to enter your Google account user/password details. 
+You will need to enter your Google account user/password details. 
+
+You will be asked if you want to create a new Google App Engine project. You should skip this step.
 
 ### Install components required by our project:
 
@@ -48,6 +50,8 @@ https://dl.google.com/dl/cloudsdk/channels/rapid/GoogleCloudSDKInstaller.exe
 _Make sure the option to install Bundled Python is checked._
 
 _Accept the options to Start Google Cloud SDK Shell and run gcloud init._
+
+You will be asked if you want to create a new Google App Engine project. You should skip this step.
 
 ### Install components required for our project:
 
