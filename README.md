@@ -81,6 +81,10 @@ Open the Start Menu and type "Edit Environment Variables For Your Account" and s
 
 In the upper section of the form that is displayed, click on "New..." and define a new variable with Name="GOPATH" and Value="C:\\Users\\[your User here]\\go".
 
+In the upper section of the form that is displayed, select the row containing the "Path" environment variable, and then click on "New...". This will display a child form. Click on the "New" button on this form and add the following value:
+
+C:\Go\bin
+
 After saving this change, you will need to open a new Command Prompt.
 
 ## Step 3 - Install GitHub Desktop
@@ -107,6 +111,10 @@ You will be prompted for the folder on your computer to clone the project to. Th
 * Windows: 
 
 C:\\Users\\[your User here]\\go\\src
+
+### 4. Install Git command-line (required by Go)
+
+Browse to https://git-scm.com/downloads and install the correct version (MacOS or Windows).
 
 ### Test that you are able to build and run the LunchMenu application
 
