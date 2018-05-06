@@ -120,7 +120,7 @@
     <!-- The <script> element contains JavaScript that runs in the browser -->
     <script>
       function load() {
-        var url = "http://localhost:8080/menus/".concat(dateKey());
+        var url = "http://localhost:8686/menus/".concat(dateKey());
 
         httpGet(
           url, 
@@ -262,7 +262,7 @@
         }
 
         // Save our requests in datastore
-        var url = "http://localhost:8080/requests/".concat(dateKey()).concat("/").concat(classroom);
+        var url = "http://localhost:8686/requests/".concat(dateKey()).concat("/").concat(classroom);
         httpPost(
           url,
           JSON.stringify(choices),

@@ -71,6 +71,8 @@ func getMenu(w http.ResponseWriter, r *http.Request) {
 	err := datastore.Get(c, key, menu)
 	if err == datastore.ErrNoSuchEntity {
 		log.Infof(c, "No menu found for [%s]", date)
+		menu.Date = date
+		menu.Items = "[]"
 	} else if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
