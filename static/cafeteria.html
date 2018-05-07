@@ -4,17 +4,28 @@
     <!-- Include our CSS -->
     <link rel="stylesheet" href="/skeleton.css">
     <link rel="stylesheet" href="/normalize.css">
+    <style>
+    </style>
   </head>
   <body style="margin:0;">
     <!-- This defines the static parts of the form (i.e. the elements that do not change from one day to the next). -->
-    <form id="myForm" class="animate-bottom">
+    <form style="text-align:center">
+      <br>
       <div class="container">
         <div class="row">
           <div class="twelve columns">
-            <h3>Under construction!</h3>
+            <input id="date" onchange="onDateChanged()" type="date" />
           </div>
         </div>
-      </div>      
+      </div>
     </form>
+    <script>
+      function onDateChanged() {
+        var e = document.getElementById("date");
+        if (e.selectedIndex != 0) {
+          document.getElementById("missing").innerHTML = "";
+        }
+      }
+    </script>
   </body>
 </html>
